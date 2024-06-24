@@ -1,8 +1,5 @@
-use std::fs;
-use std::io::{BufRead, BufReader, Error};
-use clap::{Parser};
+use clap::{Parser, Error};
 use libgroupscheck::{read_groups};
-//use sscanf::sscanf;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -21,9 +18,14 @@ struct Args {
 
 fn main() -> Result<(), Error>{
     let args = Args::parse();
-    let req_groups = read_groups(req_groups);&args.file_path); 
-    
-    println!("Fix group file? {:?}\n", args.fix);
+    let req_groups = read_groups(&args.file_path).unwrap(); 
+    for grp in req_groups {
+        println!("{:?}\n", grp[0]);
+    }
+
+    if args.fix {
+        println!("Attempting to fix group file");
+    }
     
     Ok(())
 }
